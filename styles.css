@@ -1,0 +1,14 @@
+body{
+    padding-top:2.5vw; 
+}
+.container .jumbotron{
+    border-radius:1vw; 
+}
+.form-group{
+    margin:0 auto;
+    font-size:2vw;
+    margin-bottom: 2vw;
+} 
+.loginForm{
+    margin: 0, auto;
+}

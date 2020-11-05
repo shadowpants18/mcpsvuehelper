@@ -1,0 +1,40 @@
+html{
+    scroll-behavior: smooth;
+}
+.dropdown{
+    margin:auto;
+    margin-bottom: 2vw;
+    width:50%;
+}
+.table{
+    font-size:100%;
+    border:2px solid black;
+    border-collapse: collapse;
+    margin:auto;
+    width:66%;
+    padding:2vw;
+}
+.calculate{
+    margin:auto;
+    margin-top:4vw;
+    margin-left:33%;
+    width:33%;
+    margin-bottom:4vw;
+}
+.finalGrade{
+    margin-bottom:2vw;
+}
+.className{
+    display:inline;
+    margin-left:10%;
+    width:50%;
+    font-size:150%; 
+}
+.dropdown-menu>li>a{
+    font-size: 100%;
+    margin-bottom:3vw;
+}
+tr.gradeRow>td{
+    padding:2vw;
+    margin:2vw
+}
