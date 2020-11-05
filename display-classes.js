@@ -1,1 +1,0 @@
-dropdownMenu = document.querySelector('.dropdown-menu')
