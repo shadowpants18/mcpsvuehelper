@@ -25,7 +25,7 @@ for(period of jsonData){
   }
   assWeights[title] = assignmentWeights
 }
-console.log(assWeights)
+
 const dropButton = document.querySelector('.navDrop')
 const calcButton = document.querySelector('.calculateButton')
 const addRowButton = document.querySelector('.addRowButton')
@@ -147,8 +147,6 @@ function generateFinalGrade(table, className){
       }
     }
   }
-  console.log(topweightsort)
-  console.log(botweightsort)
   let finaleGradeArray = []
   var size = Object.keys(topweightsort).length;
   for(i = 0; i< size; i++){
