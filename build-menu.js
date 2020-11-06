@@ -20,7 +20,7 @@ for(period of jsonData){
   let assignmentWeights = {}
   let weights = period.Marks.Mark.GradeCalculationSummary.AssignmentGradeCalc
   for(weight of weights){
-    let key = weight.Type.replace(/\s/g, '')
+    let key = weight.Type.replace(/\s/g, '').toLowerCase()
 
     assignmentWeights[key]=String(weight.Weight).split("%").shift()
   }
@@ -66,7 +66,7 @@ function generateTable(table, data){
       
       if(textNode.includes('Points Possible')){
         textNode = textNode.replace(/[^\d.]+/g,'');
-        textNode = "UNGRADED / " + textNode
+        textNode = "- / " + textNode
       }
       let text = document.createTextNode(textNode);
       cell.appendChild(text);
@@ -112,7 +112,7 @@ function readTable(table){
         obj.assignment = (oCells.item(j).innerHTML)
       }
       else if(j%3 == 1){
-        obj.weight = (oCells.item(j).innerHTML).replace(/\s/g,'')
+        obj.weight = (oCells.item(j).innerHTML).replace(/\s/g,'').toLowerCase()
       }
       else{
         obj.score = (oCells.item(j).innerHTML)
@@ -136,10 +136,10 @@ function generateFinalGrade(table, className){
     let gradearray = specAss.score.split('/')
     gradearray[0] = Number(gradearray[0])
     gradearray[1] = Number(gradearray[1])
-    if(!isNaN(gradearray[0])){
+    if(!isNaN(gradearray[0]) && !isNaN(gradearray[1])){
       miniTopGrade = gradearray[0]
       miniBotGrade = gradearray[1]
-      if(topweightsort[specAss.weight]){
+      if(topweightsort[specAss.weight] || botweightsort[specAss.weight]){
         topweightsort[specAss.weight] += miniTopGrade
         botweightsort[specAss.weight] += miniBotGrade
       }
@@ -160,7 +160,10 @@ function generateFinalGrade(table, className){
   let finalGrade = finaleGradeArray.reduce((a,b) => a+b, 0)
   fLoc = document.querySelector("#finalGradeLocation")
   fLoc.innerHTML = String(finalGrade).slice(0,6)
+  fLocBot = document.querySelector('#finalGradeLocationBot')
+  fLocBot.innerHTML = String(finalGrade).slice(0,6)
 }
+
 let dropMenu = document.querySelector('.dropMenu')
 generateDropDown(dropMenu, jsonData)
 
@@ -168,6 +171,8 @@ let table = document.querySelector('.gradeTable')
 generateTable(table, jsonData[0])
 
 let finalGradeTable = document.querySelector('.finalGrade')
+
+let resetGradeButton = document.querySelector('.resetButton')
 
 let a = document.querySelectorAll('.dropThing')
 
@@ -198,4 +203,12 @@ addRowButton.addEventListener("click", (event)=>{
   row.className = "gradeRow"
 })
 
-generateFinalGrade(table, "AP World History A (SOC2047A)")
+resetGradeButton.addEventListener("click", (event)=>{
+  event.preventDefault();
+  event.preventDefault()
+  table.innerHTML = ""
+  generateTable(table, classData[calcButton.id])
+  generateFinalGrade(table, calcButton.id)
+})
+
+generateFinalGrade(table, jsonData[0].Title)

@@ -23,6 +23,7 @@ html{
 }
 .finalGrade{
     margin-bottom:2vw;
+    margin-top: 2vw;
 }
 .className{
     display:inline;
@@ -37,4 +38,7 @@ html{
 tr.gradeRow>td{
     padding:2vw;
     margin:2vw
+}
+.calculateButton{
+    margin-right:2vw;
 }
