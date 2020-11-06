@@ -1,7 +1,7 @@
 const form = document.querySelector('form');
 //const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000/done' : 'https://mcpshelper-server.herokuapp.com/'
 //const API_URL = 'https://mcpshelper-server.herokuapp.com'
-const API_URL ='https://mcpshelper-server.herokuapp.com/done' 
+const API_URL ='https://mcpshelper-server.herokuapp.com/' 
 form.addEventListener('submit', (event)=>{
     event.preventDefault();
     let formData = new FormData(form); 
