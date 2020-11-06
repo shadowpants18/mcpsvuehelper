@@ -12,12 +12,13 @@ form.addEventListener('submit', (event)=>{
         name, 
         password
     };
-
+    console.log('Fetching...')
     fetch(API_URL, {
         method:'POST',
         body:JSON.stringify(loginData),
         headers:{
-            'content-type':'application/json'
+            'content-type':'application/json',
+            'Origin':'http://mcpsvuehelper.surge.sh/'
         }
     }).then(response => response.json()).then(createdCreds =>{
         let gradeJson = createdCreds
