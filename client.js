@@ -27,7 +27,7 @@ form.addEventListener('submit', (event)=>{
             return
         }else{
             localStorage.grades = JSON.stringify(gradeJson)
-            window.location.href = "grades.html"
+            window.location.href = "test.html"
         }
 });
 

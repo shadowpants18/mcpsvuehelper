@@ -1,5 +1,5 @@
 let jsonData = JSON.parse(localStorage.grades)
-console.log(jsonData)
+
 let classData = {}
 
 const assignmentTemp = {
@@ -20,7 +20,8 @@ for(period of jsonData){
   let assignmentWeights = {}
   let weights = period.Marks.Mark.GradeCalculationSummary.AssignmentGradeCalc
   for(weight of weights){
-    let key = weight.Type
+    let key = weight.Type.replace(/\s/g, '')
+
     assignmentWeights[key]=String(weight.Weight).split("%").shift()
   }
   assWeights[title] = assignmentWeights
@@ -45,6 +46,7 @@ function generateTable(table, data){
   keyRow.contentEditable = "false"
   header.className = "tableHead"
   let marks = data.Marks.Mark.Assignments.Assignment
+
   parsedmarks = []
   for(ass of marks){
     let newobj = {
@@ -110,7 +112,7 @@ function readTable(table){
         obj.assignment = (oCells.item(j).innerHTML)
       }
       else if(j%3 == 1){
-        obj.weight = (oCells.item(j).innerHTML)
+        obj.weight = (oCells.item(j).innerHTML).replace(/\s/g,'')
       }
       else{
         obj.score = (oCells.item(j).innerHTML)
