@@ -37,10 +37,11 @@ function generateTable(table, data){
   let keys = ["Assignment", "Weight", "Score"]
   let header = table.createTHead()
   let keyRow = header.insertRow()
-
+  let bold = document.createElement('strong')
   for(keyName of keys){
       let keyCell = keyRow.insertCell()
       let keyText = document.createTextNode(keyName)
+      bold.append(keyText)
       keyCell.appendChild(keyText)
   }
   keyRow.contentEditable = "false"

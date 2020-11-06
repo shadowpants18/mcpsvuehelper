@@ -1,11 +1,21 @@
 html{
     scroll-behavior: smooth;
 }
+.titleText{
+    margin:auto;
+    width:100%;
+    text-align:center;
+}
 .dropdown{
     margin:auto;
     margin-bottom: 2vw;
     width:50%;
 }
+.dropdown-toggle{
+    border-radius: 4px;
+    outline-color:black;
+}
+
 .table{
     font-size:100%;
     border:2px solid black;
@@ -18,7 +28,7 @@ html{
     margin:auto;
     margin-top:4vw;
     margin-left:33%;
-    width:33%;
+    width:66%;
     margin-bottom:4vw;
 }
 .finalGrade{
@@ -39,6 +49,10 @@ tr.gradeRow>td{
     padding:2vw;
     margin:2vw
 }
-.calculateButton{
+.btn{
     margin-right:2vw;
+}
+.tableHead>tr{
+    font-size:20px;
+    font-weight:bold;
 }
