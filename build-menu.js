@@ -31,6 +31,22 @@ const dropButton = document.querySelector('.navDrop')
 const calcButton = document.querySelector('.calculateButton')
 const addRowButton = document.querySelector('.addRowButton')
 
+function roundGrade(grade){
+  let gradeLength = grade.length
+  if(gradeLength<6){
+    return grade
+  }
+  if(Number(grade[grade.length - 1])>=5){
+    newGrade = grade.split('')
+    newGrade[grade.length -2] = String(Number(grade[grade.length-2])+1)
+    return newGrade.join('').slice(0,5)
+  }
+  else{
+    return grade.slice(0,5)
+  }
+}
+
+
 function generateTable(table, data){
   let className = document.querySelector('.className')
   className.innerHTML = `${data.Title} ${data.Staff}`
@@ -158,11 +174,12 @@ function generateFinalGrade(table, className){
     let grade = topWeight/botWeight
     finaleGradeArray.push(grade)
   }
-  let finalGrade = finaleGradeArray.reduce((a,b) => a+b, 0)
+  let finalGrade = roundGrade(String(finaleGradeArray.reduce((a,b) => a+b, 0)).slice(0,6))
   fLoc = document.querySelector("#finalGradeLocation")
-  fLoc.innerHTML = String(finalGrade).slice(0,6)
+  fLoc.innerHTML = finalGrade
   fLocBot = document.querySelector('#finalGradeLocationBot')
-  fLocBot.innerHTML = String(finalGrade).slice(0,6)
+  fLocBot.innerHTML = finalGrade
+  roundGrade(finalGrade)
 }
 
 let dropMenu = document.querySelector('.dropMenu')
