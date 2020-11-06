@@ -1,5 +1,5 @@
 let jsonData = JSON.parse(localStorage.grades)
-
+console.log(jsonData)
 let classData = {}
 
 const assignmentTemp = {
