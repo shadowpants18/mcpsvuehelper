@@ -79,8 +79,13 @@ function generateTable(table, data){
     let row = body.insertRow();
     for (key in element) {
       let cell = row.insertCell();
+
       let textNode = element[key]
-      
+
+      if(textNode[textNode.length-2] == 0){
+        textNode = textNode.slice(0, textNode.length-2)
+      }
+
       if(textNode.includes('Points Possible')){
         textNode = textNode.replace(/[^\d.]+/g,'');
         textNode = "- / " + textNode
