@@ -12,6 +12,14 @@ for(data of jsonData){
   classData[key] = data
 }
 
+const gradeColorDict = {
+  "A":"greenyellow",
+  "B":"deepskyblue",
+  "C":"yellow",
+  "D":"orange",
+  "E":"red"
+}
+
 let assWeights = {}
 
 for(period of jsonData){
@@ -77,15 +85,18 @@ function generateTable(table, data){
   body.className = 'gradeBody'
   for (let element of parsedmarks) {
     let row = body.insertRow();
+    let rowGrade
     for (key in element) {
       let cell = row.insertCell();
 
       let textNode = element[key]
 
-      if(textNode[textNode.length-2] == 0){
+      if(textNode[textNode.length-2] == 0 && textNode[textNode.length-1] == 0){
         textNode = textNode.slice(0, textNode.length-2)
       }
-
+      if(checkIfGrade(textNode)){
+        rowGrade = getLetterGrade(textNode)
+      }
       if(textNode.includes('Points Possible')){
         textNode = textNode.replace(/[^\d.]+/g,'');
         textNode = "- / " + textNode
@@ -95,6 +106,7 @@ function generateTable(table, data){
       cell.style.padding = "1vw"
     }
     row.className = "gradeRow"
+    row.style.color = gradeColorDict[rowGrade]
   }
   table.appendChild(body)
   calcButton.id = `${data.Title}`
@@ -187,6 +199,31 @@ function generateFinalGrade(table, className){
   roundGrade(finalGrade)
 }
 
+function checkIfGrade(grade){
+  let possibleGrade = grade.replace(/\//g, '').replace(/\s/g, '').replace(/\./g, '')
+  console.log(!isNaN(Number(possibleGrade)))
+  return !isNaN(Number(possibleGrade))
+}
+
+function getLetterGrade(grade){
+  let gradeArray = grade.split('/')
+  let actGrade = Number(gradeArray[0])/Number(gradeArray[1])
+  if(actGrade >= .895){
+    return "A"
+  }
+  else if(actGrade >= .795){
+    return "B"
+  }
+  else if(actGrade >=.695){
+    return "C"
+  }
+  else if(actGrade >=.595){
+    return "D"
+  }
+  else{
+    return "E"
+  }
+}
 let dropMenu = document.querySelector('.dropMenu')
 generateDropDown(dropMenu, jsonData)
 
