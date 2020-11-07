@@ -1,5 +1,4 @@
 let jsonData = JSON.parse(localStorage.grades)
-
 let classData = {}
 
 const assignmentTemp = {
@@ -30,6 +29,7 @@ for(period of jsonData){
 const dropButton = document.querySelector('.navDrop')
 const calcButton = document.querySelector('.calculateButton')
 const addRowButton = document.querySelector('.addRowButton')
+const logOutButton = document.querySelector('.logOutButton')
 
 function roundGrade(grade){
   let gradeLength = grade.length
@@ -228,10 +228,14 @@ addRowButton.addEventListener("click", (event)=>{
 
 resetGradeButton.addEventListener("click", (event)=>{
   event.preventDefault();
-  event.preventDefault()
   table.innerHTML = ""
   generateTable(table, classData[calcButton.id])
   generateFinalGrade(table, calcButton.id)
 })
 
+logOutButton.addEventListener("click", (event)=>{
+  event.preventDefault();
+  window.location.href = "index.html"
+  localStorage.grades = NaN
+})
 generateFinalGrade(table, jsonData[0].Title)

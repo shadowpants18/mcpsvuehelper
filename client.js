@@ -1,6 +1,6 @@
 const form = document.querySelector('form');
-//const API_URL = 'http://localhost:5000/done'
-const API_URL ='https://mcpshelper-server.herokuapp.com/done' 
+const API_URL = 'http://localhost:5000/done'
+//const API_URL ='https://mcpshelper-server.herokuapp.com/done' 
 
 const loadingElement = document.querySelector('.loading')
 loadingElement.style.display = "none"
@@ -30,8 +30,8 @@ form.addEventListener('submit', (event)=>{
             loadingElement.style.display = "none"
             return
         }else{
-            loadingElement.style.display = "none"
             localStorage.grades = JSON.stringify(gradeJson)
+            loadingElement.style.display = "none"
             window.location.href = "grades.html"
         }
 });
