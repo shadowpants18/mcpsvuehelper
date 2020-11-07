@@ -201,7 +201,6 @@ function generateFinalGrade(table, className){
 
 function checkIfGrade(grade){
   let possibleGrade = grade.replace(/\//g, '').replace(/\s/g, '').replace(/\./g, '')
-  console.log(!isNaN(Number(possibleGrade)))
   return !isNaN(Number(possibleGrade))
 }
 
