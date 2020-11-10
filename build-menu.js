@@ -38,6 +38,7 @@ const dropButton = document.querySelector('.navDrop')
 const calcButton = document.querySelector('.calculateButton')
 const addRowButton = document.querySelector('.addRowButton')
 const logOutButton = document.querySelector('.logOutButton')
+const removeRowButton = document.querySelector('.removeRowButton')
 
 function roundGrade(grade){
   let gradeLength = grade.length
@@ -57,7 +58,7 @@ function roundGrade(grade){
 
 function generateTable(table, data){
   let className = document.querySelector('.className')
-  className.innerHTML = `${data.Title} ${data.Staff}`
+  className.innerHTML = `${data.Title.replace(/ *\([^)]*\) */g, "")} - ${data.Staff}`
   let keys = ["Assignment", "Weight", "Score"]
   let header = table.createTHead()
   let keyRow = header.insertRow()
@@ -105,7 +106,7 @@ function generateTable(table, data){
       cell.appendChild(text);
       cell.style.padding = "1vw"
     }
-    row.className = "gradeRow"
+    row.className = "gradeRow ogGrade"
     row.style.color = gradeColorDict[rowGrade]
   }
   table.appendChild(body)
@@ -261,6 +262,15 @@ addRowButton.addEventListener("click", (event)=>{
     cell.style.padding = "1vw"
   }
   row.className = "gradeRow"
+})
+
+removeRowButton.addEventListener("click", (event)=>{
+  event.preventDefault();
+  let tableBody = document.querySelector('.gradeBody')
+  let bodyRowLen = tableBody.rows.length
+  if(tableBody.rows[bodyRowLen -1].className != "gradeRow ogGrade"){
+    tableBody.deleteRow(bodyRowLen - 1)
+  }
 })
 
 resetGradeButton.addEventListener("click", (event)=>{
