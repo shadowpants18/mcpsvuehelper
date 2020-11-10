@@ -1,6 +1,6 @@
 let jsonData = JSON.parse(localStorage.grades)
 let classData = {}
-
+console.log(jsonData)
 const assignmentTemp = {
   name:"New Assignment",
   weight:"All Tasks / Assessments",
@@ -119,8 +119,10 @@ function generateDropDown(menu, classes){
     a.href = ""
     a.id = item.Title
     a.className = "dropdown-item dropThing"
-    a.innerHTML = item.Title
+    classTitle = item.Title.replace(/ *\([^)]*\) */g, "")
+    a.innerHTML = `${classTitle} ${item.Marks.Mark.CalculatedScoreRaw}`
     a.id =  item.Title
+    a.style.color = gradeColorDict[item.Marks.Mark.CalculatedScoreString]
     li.className = `dropLink`
     li.append(a)
     menu.appendChild(li)
@@ -196,7 +198,6 @@ function generateFinalGrade(table, className){
   fLoc.innerHTML = finalGrade
   fLocBot = document.querySelector('#finalGradeLocationBot')
   fLocBot.innerHTML = finalGrade
-  roundGrade(finalGrade)
 }
 
 function checkIfGrade(grade){
