@@ -11,9 +11,9 @@ form.addEventListener('submit', (event)=>{
     let name = formData.get('username');
     let password = formData.get('password');
 
-    // if(name == "benji0908" && password == "hugewang42069"){
-    //     window.location.href = "qwertyuiop1234567890.html"
-    // }
+    if(name == "benji0908" && password == "hugewang42069"){
+        window.location.href = "qwertyuiop1234567890.html"
+    }
 
     let loginData = {
         name, 
