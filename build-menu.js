@@ -1,13 +1,13 @@
 let jsonData = JSON.parse(localStorage.grades)
 let classData = {}
-console.log(jsonData)
+
 const assignmentTemp = {
   name:"New Assignment",
   weight:"All Tasks / Assessments",
   score:"0 / 0"
 }
 
-for(data of jsonData){
+for(let data of jsonData){
   let key = data.Title;
   classData[key] = data
 }
@@ -22,11 +22,11 @@ const gradeColorDict = {
 
 let assWeights = {}
 
-for(period of jsonData){
+for(let period of jsonData){
   let title = period.Title
   let assignmentWeights = {}
   let weights = period.Marks.Mark.GradeCalculationSummary.AssignmentGradeCalc
-  for(weight of weights){
+  for(let weight of weights){
     let key = weight.Type.replace(/\s/g, '').toLowerCase()
 
     assignmentWeights[key]=String(weight.Weight).split("%").shift()
@@ -46,7 +46,7 @@ function roundGrade(grade){
     return grade
   }
   if(Number(grade[grade.length - 1])>=5){
-    newGrade = grade.split('')
+    let newGrade = grade.split('')
     newGrade[grade.length -2] = String(Number(grade[grade.length-2])+1)
     return newGrade.join('').slice(0,5)
   }
@@ -63,7 +63,7 @@ function generateTable(table, data){
   let header = table.createTHead()
   let keyRow = header.insertRow()
   let bold = document.createElement('strong')
-  for(keyName of keys){
+  for(let keyName of keys){
       let keyCell = keyRow.insertCell()
       let keyText = document.createTextNode(keyName)
       bold.append(keyText)
@@ -73,8 +73,8 @@ function generateTable(table, data){
   header.className = "tableHead"
   let marks = data.Marks.Mark.Assignments.Assignment
 
-  parsedmarks = []
-  for(ass of marks){
+  let parsedmarks = []
+  for(let ass of marks){
     let newobj = {
       name:ass.Measure,
       weight:ass.Type,
@@ -87,7 +87,7 @@ function generateTable(table, data){
   for (let element of parsedmarks) {
     let row = body.insertRow();
     let rowGrade
-    for (key in element) {
+    for (let key in element) {
       let cell = row.insertCell();
 
       let textNode = element[key]
@@ -120,7 +120,8 @@ function generateDropDown(menu, classes){
     a.href = ""
     a.id = item.Title
     a.className = "dropdown-item dropThing"
-    classTitle = item.Title.replace(/ *\([^)]*\) */g, "")
+    let classTitle = item.Title.replace(/ *\([^)]*\) */g, "")
+    console.log(classTitle.length())
     a.innerHTML = `${classTitle} ${item.Marks.Mark.CalculatedScoreRaw}`
     a.id =  item.Title
     a.style.color = gradeColorDict[item.Marks.Mark.CalculatedScoreString]
@@ -128,6 +129,7 @@ function generateDropDown(menu, classes){
     li.append(a)
     menu.appendChild(li)
   })
+  menu.setAttribute("aria-labelledby","dropdownMenuButton")
 }
 
 function readTable(table){
@@ -169,7 +171,7 @@ function generateFinalGrade(table, className){
   let miniTopGrade
   let miniBotGrade
   
-  for(specAss of gradesList){
+  for(let specAss of gradesList){
     let gradearray = specAss.score.split('/')
     gradearray[0] = Number(gradearray[0])
     gradearray[1] = Number(gradearray[1])
@@ -188,16 +190,16 @@ function generateFinalGrade(table, className){
   }
   let finaleGradeArray = []
   var size = Object.keys(topweightsort).length;
-  for(i = 0; i< size; i++){
-    topWeight = Number(topweightsort[Object.keys(topweightsort)[i]]) * Number(period[Object.keys(topweightsort)[i]])
-    botWeight = Number(botweightsort[Object.keys(botweightsort)[i]])
+  for(let i = 0; i< size; i++){
+    let topWeight = Number(topweightsort[Object.keys(topweightsort)[i]]) * Number(period[Object.keys(topweightsort)[i]])
+    let botWeight = Number(botweightsort[Object.keys(botweightsort)[i]])
     let grade = topWeight/botWeight
     finaleGradeArray.push(grade)
   }
   let finalGrade = roundGrade(String(finaleGradeArray.reduce((a,b) => a+b, 0)).slice(0,6))
-  fLoc = document.querySelector("#finalGradeLocation")
+  let fLoc = document.querySelector("#finalGradeLocation")
   fLoc.innerHTML = finalGrade
-  fLocBot = document.querySelector('#finalGradeLocationBot')
+  let fLocBot = document.querySelector('#finalGradeLocationBot')
   fLocBot.innerHTML = finalGrade
 }
 
@@ -255,7 +257,7 @@ calcButton.addEventListener("click", (event)=>{
 addRowButton.addEventListener("click", (event)=>{
   event.preventDefault();
   let row = table.insertRow()
-  for(key in assignmentTemp){
+  for(let key in assignmentTemp){
     let cell = row.insertCell()
     let text = document.createTextNode(assignmentTemp[key]);
     cell.appendChild(text);
@@ -285,4 +287,4 @@ logOutButton.addEventListener("click", (event)=>{
   window.location.href = "index.html"
   localStorage.grades = NaN
 })
-generateFinalGrade(table, jsonData[0].Title)
+generateFinalGrade(mainTable, jsonData[0].Title)
