@@ -347,6 +347,17 @@ resetGradeButton.addEventListener("click", (event)=>{
   event.preventDefault();
   mainTable.innerHTML = ""
   generateTable(mainTable, FullClassName)
+  readTable(mainTable)
+  let fLoc = document.querySelector("#finalGradeLocation")
+    let fLocBot = document.querySelector('#finalGradeLocationBot')
+    fLoc.innerHTML = classData[FullClassName].Marks.Mark.CalculatedScoreRaw
+    fLocBot.innerHTML = classData[FullClassName].Marks.Mark.CalculatedScoreRaw
+    let fLetter = document.querySelector("#finalLetter")
+    let fLetterBot = document.querySelector("#finalLetterBot")
+    fLetter.innerHTML = classData[FullClassName].Marks.Mark.CalculatedScoreString
+    fLetterBot.innerHTML = classData[FullClassName].Marks.Mark.CalculatedScoreString
+    fLetter.style.color = gradeColorDict[classData[FullClassName].Marks.Mark.CalculatedScoreString]
+    fLetterBot.style.color = gradeColorDict[classData[FullClassName].Marks.Mark.CalculatedScoreString]
 })
 
 logOutButton.addEventListener("click", (event)=>{
