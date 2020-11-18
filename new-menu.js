@@ -55,6 +55,27 @@ const allLinks = document.querySelectorAll('.dropThing')
 generateTable(mainTable, FullClassName)
 readTable(mainTable)
 //takes a string
+function getFLetter(grade){
+  let actGrade = grade/100
+  if(isNaN(grade)){
+    return "N/A"
+  }
+  if(actGrade >= .895){
+    return "A"
+  }
+  else if(actGrade >= .795){
+    return "B"
+  }
+  else if(actGrade >=.695){
+    return "C"
+  }
+  else if(actGrade >=.595){
+    return "D"
+  }
+  else{
+    return "E"
+  }
+}
 function roundGrade(grade){
   let gradeLength = String(grade.length)
   if(gradeLength<6){
@@ -115,7 +136,7 @@ function getLetterGrade(grade){
 function checkIfGrade(grade){
     let possibleGrade = grade.replace(/\//g, '').replace(/\s/g, '').replace(/\./g, '')
     return !isNaN(Number(possibleGrade))
-  }
+}
 function generateTable(table, fullClassName){
     let className = document.querySelector('.className')
     className.innerHTML = `${fullClassName.replace(/ *\([^)]*\) */g, "")} - ${classData[fullClassName].Staff}`
@@ -238,6 +259,13 @@ function readTable(table){
     let fLocBot = document.querySelector('#finalGradeLocationBot')
     fLoc.innerHTML = finalGrade
     fLocBot.innerHTML = finalGrade
+    let finalLetterGrade = getFLetter(finalGrade)
+    let fLetter = document.querySelector("#finalLetter")
+    let fLetterBot = document.querySelector("#finalLetterBot")
+    fLetter.innerHTML = finalLetterGrade
+    fLetterBot.innerHTML = finalLetterGrade
+    fLetter.style.color = gradeColorDict[finalLetterGrade]
+    fLetterBot.style.color = gradeColorDict[finalLetterGrade]
 }
 
 
@@ -251,6 +279,12 @@ allLinks.forEach(link =>{
     let fLocBot = document.querySelector('#finalGradeLocationBot')
     fLoc.innerHTML = classData[FullClassName].Marks.Mark.CalculatedScoreRaw
     fLocBot.innerHTML = classData[FullClassName].Marks.Mark.CalculatedScoreRaw
+    let fLetter = document.querySelector("#finalLetter")
+    let fLetterBot = document.querySelector("#finalLetterBot")
+    fLetter.innerHTML = classData[FullClassName].Marks.Mark.CalculatedScoreString
+    fLetterBot.innerHTML = classData[FullClassName].Marks.Mark.CalculatedScoreString
+    fLetter.style.color = gradeColorDict[classData[FullClassName].Marks.Mark.CalculatedScoreString]
+    fLetterBot.style.color = gradeColorDict[classData[FullClassName].Marks.Mark.CalculatedScoreString]
   }
 
   return false

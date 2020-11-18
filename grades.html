@@ -16,7 +16,7 @@
 
 <div class="container">
     <button type="button" class="btn btn-primary pull-right logOutButton" data-toggle="dropdown">LogOut</button>
-    <div class="jumbotron">
+    <div id = "top"class="jumbotron">
         <h1 class="titleText">MCPS Vue Helper</h1>
         <p class="titleText"> Built for MCPS <a href="https://md-mcps-psv.edupoint.com/">Student Vue</a></p>
     <div style="margin:auto; width:50%;" class="text-center">
@@ -24,6 +24,10 @@
 </div>
 </div>
 </div>
+
+
+<a href="#bot"><button id="scrollDownButton"type="button" class="btn btn-primary pull-right">Scroll down</button></a>
+
 
 <div class="dropdown">
   <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" ria-haspopup="true" aria-expanded="false">
@@ -37,14 +41,18 @@
 <div id = "div1">
 
 <table class = "table table-striped table-hover finalGrade">
-<thead><tr><td>Final Grade</td><td id = "finalGradeLocation"></td></tr></thead>
+<thead><tr><td>Final Grade</td><td id = "finalGradeLocation"></td><td id = "finalLetter"></td></tr></thead>
 </table>
 <table class = "table table-striped table-hover gradeTable">
 </table>
 
 <table class = "table table-striped table-hover finalGrade">
-<thead><tr><td>Final Grade</td><td id = "finalGradeLocationBot"></td></tr></thead>
+<thead><tr><td>Final Grade</td><td id = "finalGradeLocationBot"></td><td id= "finalLetterBot"></td></tr></thead>
 </table>
+</div>
+
+<div id = "bot">
+<a href="#top"><button id="scrolUpButton"type="button" class="btn btn-primary pull-right">Scroll up</button></a>
 </div>
 
 <div class = "calculate">
