@@ -3,7 +3,7 @@ let classData = {}
 for(let i of jsonData){
     classData[i.Title] = i
 }
-
+console.log(jsonData)
 const assignmentTemp = {
   Measure:"New Assignment",
   Type:"All Tasks / Assessments",
@@ -53,7 +53,7 @@ const resetGradeButton = document.querySelector('.resetButton')
 const allLinks = document.querySelectorAll('.dropThing')
 
 generateTable(mainTable, FullClassName)
-
+readTable(mainTable)
 //takes a string
 function roundGrade(grade){
   let gradeLength = String(grade.length)
@@ -77,7 +77,7 @@ function generateDropDown(menu, classes){
     a.id = item.Title
     a.className = "dropdown-item dropThing"
     let classTitle = item.Title.replace(/ *\([^)]*\) */g, "")
-    a.innerHTML = `${item.Marks.Mark.CalculatedScoreRaw} - ${classTitle.slice(0,-1)}`
+    a.innerHTML = `${item.Marks.Mark.CalculatedScoreRaw} - ${classTitle}`
     a.id =  item.Title
     a.style.color = gradeColorDict[item.Marks.Mark.CalculatedScoreString]
     li.className = `dropLink`
@@ -215,8 +215,10 @@ function readTable(table){
         }
         else if(cell.id == "Points"){
           cellGrade = cell.innerHTML
-          totGrade[cellWeight].topScore += Number(cell.innerHTML.split('/')[0])
-          totGrade[cellWeight].botScore += Number(cell.innerHTML.split('/')[1])
+          if(!isNaN(Number(cell.innerHTML.split('/')[0]) && !isNaN(Number(cell.innerHTML.split('/')[1])))){
+            totGrade[cellWeight].topScore += Number(cell.innerHTML.split('/')[0])
+            totGrade[cellWeight].botScore += Number(cell.innerHTML.split('/')[1])
+          }
         }
         else if(cell.id == "Letter"){
           let letterGrade = getLetterGrade(cellGrade)
@@ -244,10 +246,13 @@ allLinks.forEach(link =>{
     event.preventDefault()
     mainTable.innerHTML = ""
     FullClassName = link.id
-    generateTable(mainTable, FullClassName)
-    readTable(mainTable)
+    generateTable(mainTable, FullClassName) 
+    let fLoc = document.querySelector("#finalGradeLocation")
+    let fLocBot = document.querySelector('#finalGradeLocationBot')
+    fLoc.innerHTML = classData[FullClassName].Marks.Mark.CalculatedScoreRaw
+    fLocBot.innerHTML = classData[FullClassName].Marks.Mark.CalculatedScoreRaw
   }
-  
+
   return false
 })
 
@@ -308,7 +313,6 @@ resetGradeButton.addEventListener("click", (event)=>{
   event.preventDefault();
   mainTable.innerHTML = ""
   generateTable(mainTable, FullClassName)
-  readTable(mainTable)
 })
 
 logOutButton.addEventListener("click", (event)=>{
@@ -317,4 +321,3 @@ logOutButton.addEventListener("click", (event)=>{
   localStorage.grades = NaN
 })
 
-readTable(mainTable)
