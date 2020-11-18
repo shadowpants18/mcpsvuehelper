@@ -245,6 +245,7 @@ allLinks.forEach(link =>{
     mainTable.innerHTML = ""
     FullClassName = link.id
     generateTable(mainTable, FullClassName)
+    readTable(mainTable)
   }
   
   return false
@@ -307,6 +308,7 @@ resetGradeButton.addEventListener("click", (event)=>{
   event.preventDefault();
   mainTable.innerHTML = ""
   generateTable(mainTable, FullClassName)
+  readTable(mainTable)
 })
 
 logOutButton.addEventListener("click", (event)=>{
