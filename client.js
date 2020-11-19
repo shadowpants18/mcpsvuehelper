@@ -34,7 +34,8 @@ form.addEventListener('submit', (event)=>{
             loadingElement.style.display = "none"
             return
         }else{
-            localStorage.grades = JSON.stringify(gradeJson)
+            sessionStorage.grades = JSON.stringify(gradeJson)
+            sessionStorage.setItem('status', 'loggedIn')
             loadingElement.style.display = "none"
             window.location.href = "grades.html"
         }

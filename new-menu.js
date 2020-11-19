@@ -1,9 +1,17 @@
-let jsonData = JSON.parse(localStorage.grades)
+if(sessionStorage.grades === "null"){
+  window.location.href = "index.html"
+}
+else if(sessionStorage.status === "null"){
+  window.location.href = "index.html"
+}
+
+let jsonData = JSON.parse(sessionStorage.grades)
+
 let classData = {}
 for(let i of jsonData){
     classData[i.Title] = i
 }
-console.log(jsonData)
+
 const assignmentTemp = {
   Measure:"New Assignment",
   Type:"All Tasks / Assessments",
@@ -254,7 +262,10 @@ function readTable(table){
     }
 
     let finalGrade = roundGrade(String(unroundedFinal))
-
+    if(isNaN(finalGrade)){
+      alert('Make sure your grades have a "/"')
+      return
+    }
     let fLoc = document.querySelector("#finalGradeLocation")
     let fLocBot = document.querySelector('#finalGradeLocationBot')
     fLoc.innerHTML = finalGrade
@@ -363,6 +374,7 @@ resetGradeButton.addEventListener("click", (event)=>{
 logOutButton.addEventListener("click", (event)=>{
   event.preventDefault();
   window.location.href = "index.html"
-  localStorage.grades = NaN
+  sessionStorage.grades = null
+  sessionStorage.status = null
 })
 
