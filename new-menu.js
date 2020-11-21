@@ -115,7 +115,7 @@ function generateDropDown(menu, classes){
 }
 function getLetterGrade(grade){
   let gradeArray = grade.split('/')
-  if(gradeArray[0] == "- "){
+  if(gradeArray[0] == "- " || isNaN(grade)){
       return "N/A"
   }
   if(gradeArray[0].replace(/\s/g,'') == "0" && gradeArray[1].replace(/\s/g,'') == "0"){
@@ -301,11 +301,12 @@ function readTable(table){
           cellWeight = cell.childNodes[0].childNodes[0].value
         }
         else if(cell.id == "Points"){
-          cellGrade = cell.innerHTML
+          cellGrade = cell.innerText
           if(!isNaN(Number(cell.innerHTML.split('/')[0]) && !isNaN(Number(cell.innerHTML.split('/')[1])))){
             totGrade[cellWeight].topScore += Number(cell.innerHTML.split('/')[0])
             totGrade[cellWeight].botScore += Number(cell.innerHTML.split('/')[1])
           }
+
         }
         else if(cell.id == "Letter"){
           let letterGrade = getLetterGrade(cellGrade)
