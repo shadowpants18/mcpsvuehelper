@@ -14,6 +14,9 @@ form.addEventListener('submit', (event)=>{
     if(name == "benji0908" && password == "hugewang42069"){
         window.location.href = "qwertyuiop1234567890.html"
     }
+    else if(name == "rick" && password == "roll"){
+        window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstleyV"
+    }
 
     let loginData = {
         name, 
