@@ -1,7 +1,4 @@
-if(sessionStorage.grades === "null"){
-  window.location.href = "index.html"
-}
-else if(sessionStorage.status === "null"){
+if(sessionStorage.grades === "null" || sessionStorage.status === "null"){
   window.location.href = "index.html"
 }
 
@@ -64,10 +61,10 @@ generateTable(mainTable, FullClassName)
 readTable(mainTable)
 //takes a string
 function getFLetter(grade){
-  let actGrade = grade/100
   if(isNaN(grade)){
     return "N/A"
   }
+  let actGrade = grade/100
   if(actGrade >= .895){
     return "A"
   }
@@ -146,6 +143,8 @@ function checkIfGrade(grade){
     return !isNaN(Number(possibleGrade))
 }
 function generateTable(table, fullClassName){
+    let tbody = document.createElement('tbody')
+    tbody.className = 'gradeBody'
     let className = document.querySelector('.className')
     className.innerHTML = `${fullClassName.replace(/ *\([^)]*\) */g, "")} - ${classData[fullClassName].Staff}`
     let keys = ["Assignment", "Weight", "Score", "Letter"]
@@ -161,9 +160,66 @@ function generateTable(table, fullClassName){
     }
     header.className = "tableHead"
     let marks = classData[fullClassName].Marks.Mark.Assignments.Assignment
-    let tbody = document.createElement('tbody')
-    tbody.className = 'gradeBody'
-    for(let element of marks){
+    if(!marks){
+      let rowGrade
+      let textNode
+      let rowDrop = document.createElement("FORM")
+      let rowSelect=  document.createElement("SELECT")
+      let row = tbody.insertRow()
+      for(let key of hiddenKeys){
+        let cell = row.insertCell()
+        if(key == "Points"){
+          textNode = assignmentTemp[key]
+          if(textNode.includes('Points Possible')){
+          textNode = textNode.replace(/[^\d.]+/g,'');
+          textNode = "- / " + textNode
+          }
+          if(textNode.split('/').length > 6){
+            textNode = textNode.slice(0, textNode.length-2)
+          }
+          rowGrade = getLetterGrade(textNode)
+          }
+        else if(key =="Measure"){
+            textNode = "No assignments!"
+        }
+        else if(key == "Type"){
+            rowDrop.action = ""
+            rowDrop.name = "WeightDrop"
+            //rowDrop.className = "dropWeight"
+            rowSelect.className = "form-control dropWeight"
+            for(let weight of classData[fullClassName].Marks.Mark.GradeCalculationSummary.AssignmentGradeCalc){
+                if(weight.Type != "TOTAL"){
+                    let option = document.createElement("option")
+                    option.value = weight.Type
+                    option.innerHTML = weight.Type
+                    rowSelect.add(option)
+                }
+                rowSelect.value = assignmentTemp[key]
+            }
+            rowDrop.appendChild(rowSelect)
+          }
+          else{
+              textNode = rowGrade
+          }
+
+          if(key == "Type"){
+              cell.appendChild(rowDrop)
+          }
+          else{
+              let text = document.createTextNode(textNode);
+              cell.appendChild(text);
+          }
+          cell.style.padding = "1vw"
+          cell.id = key
+          if(key == "Points"){
+              cell.contentEditable = "true"
+          }
+      }
+      row.className = "gradeRow ogGrade"
+      row.style.color = gradeColorDict[rowGrade]
+    }
+    else{
+      for(let element of marks){
         let row = tbody.insertRow()
         let rowGrade
         let textNode
@@ -219,6 +275,8 @@ function generateTable(table, fullClassName){
         row.className = "gradeRow ogGrade"
         row.style.color = gradeColorDict[rowGrade]
     }
+    }
+    
     table.appendChild(tbody)
     calcButton.id = `${classData.Title}`
 }
@@ -257,15 +315,25 @@ function readTable(table){
       }
     }
     let unroundedFinal = 0
-    for(partialGrade in totGrade){
-      unroundedFinal += (totGrade[partialGrade].topScore/totGrade[partialGrade].botScore) * totGrade[partialGrade].weight
+    let weightModifer = 0
+    for(let partialGrade in totGrade){
+      if(isNaN(totGrade[partialGrade].topScore/totGrade[partialGrade].botScore)){
+        weightModifer += totGrade[partialGrade].weight
+        if(weightModifer == 100){
+          unroundedFinal = "N/A"
+        }
+      }
     }
-
-    let finalGrade = roundGrade(String(unroundedFinal))
-    if(isNaN(finalGrade)){
-      alert('Make sure your grades have a "/"')
+    for(let partialGrade in totGrade){
+      if(!isNaN(totGrade[partialGrade].topScore/totGrade[partialGrade].botScore)){
+        unroundedFinal += (totGrade[partialGrade].topScore/totGrade[partialGrade].botScore) * (totGrade[partialGrade].weight + weightModifer)
+      }
+    }
+    if(isNaN(unroundedFinal) && unroundedFinal != "N/A"){
+      alert(`Make sure your grades have a "/" and you aren't dividing by zeroes!`)
       return
     }
+    let finalGrade = roundGrade(String(unroundedFinal))
     let fLoc = document.querySelector("#finalGradeLocation")
     let fLocBot = document.querySelector('#finalGradeLocationBot')
     fLoc.innerHTML = finalGrade
@@ -328,14 +396,14 @@ addRowButton.addEventListener("click", (event)=>{
       //rowDrop.className = "dropWeight"
       rowSelect.className = "form-control dropWeight"
         for(let weight of classData[FullClassName].Marks.Mark.GradeCalculationSummary.AssignmentGradeCalc){
-            if(weight.Type != "TOTAL"){
-                let option = document.createElement("option")
-                option.value = weight.Type
-                option.innerHTML = weight.Type
-                rowSelect.add(option)
-            }
-            rowSelect.value = classData[FullClassName].Marks.Mark.GradeCalculationSummary.AssignmentGradeCalc[0].Type
-        }
+          if(weight.Type != "TOTAL"){
+              let option = document.createElement("option")
+              option.value = weight.Type
+              option.innerHTML = weight.Type
+              rowSelect.add(option)
+          }
+          }
+      rowSelect.value = rowSelect.childNodes[0].value
       rowDrop.appendChild(rowSelect)
       cell.appendChild(rowDrop)
     }
