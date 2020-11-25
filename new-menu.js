@@ -1,4 +1,4 @@
-if(sessionStorage.grades === "null" || sessionStorage.status === "null"){
+if(sessionStorage.grades === "null" || sessionStorage.status === "null" || sessionStorage.grades === undefined){
   window.location.href = "index.html"
 }
 
@@ -115,7 +115,7 @@ function generateDropDown(menu, classes){
 }
 function getLetterGrade(grade){
   let gradeArray = grade.split('/')
-  if(gradeArray[0] == "- " || isNaN(grade)){
+  if(gradeArray[0] == "- "){
       return "N/A"
   }
   if(gradeArray[0].replace(/\s/g,'') == "0" && gradeArray[1].replace(/\s/g,'') == "0"){
@@ -134,8 +134,11 @@ function getLetterGrade(grade){
   else if(actGrade >=.595){
     return "D"
   }
-  else{
+  else if(actGrade < .595){
     return "E"
+  }
+  else{
+    return "N/A"
   }
 }
 function checkIfGrade(grade){
@@ -218,7 +221,7 @@ function generateTable(table, fullClassName){
       row.className = "gradeRow ogGrade"
       row.style.color = gradeColorDict[rowGrade]
     }
-    else{
+    else if(Array.isArray(marks)){
       for(let element of marks){
         let row = tbody.insertRow()
         let rowGrade
@@ -275,6 +278,62 @@ function generateTable(table, fullClassName){
         row.className = "gradeRow ogGrade"
         row.style.color = gradeColorDict[rowGrade]
     }
+    }
+    else{
+      let row = tbody.insertRow()
+        let rowGrade
+        let textNode
+        let rowDrop = document.createElement("FORM")
+        let rowSelect=  document.createElement("SELECT")
+        for(let key of hiddenKeys){
+            let cell = row.insertCell()
+            if(key == "Points"){
+                textNode = marks[key]
+                if(textNode.includes('Points Possible')){
+                textNode = textNode.replace(/[^\d.]+/g,'');
+                textNode = "- / " + textNode
+                }
+                textNode = textNode.slice(0, textNode.length-2)
+                rowGrade = getLetterGrade(textNode)
+            }
+            else if(key =="Measure"){
+                textNode = marks[key]
+            }
+            else if(key == "Type"){
+                rowDrop.action = ""
+                rowDrop.name = "WeightDrop"
+                //rowDrop.className = "dropWeight"
+                rowSelect.className = "form-control dropWeight"
+                for(let weight of classData[fullClassName].Marks.Mark.GradeCalculationSummary.AssignmentGradeCalc){
+                    if(weight.Type != "TOTAL"){
+                        let option = document.createElement("option")
+                        option.value = weight.Type
+                        option.innerHTML = weight.Type
+                        rowSelect.add(option)
+                    }
+                    rowSelect.value = marks[key]
+                }
+                rowDrop.appendChild(rowSelect)
+            }
+            else{
+                textNode = rowGrade
+            }
+
+            if(key == "Type"){
+                cell.appendChild(rowDrop)
+            }
+            else{
+                let text = document.createTextNode(textNode);
+                cell.appendChild(text);
+            }
+            cell.style.padding = "1vw"
+            cell.id = key
+            if(key == "Points"){
+                cell.contentEditable = "true"
+            }
+        }
+        row.className = "gradeRow ogGrade"
+        row.style.color = gradeColorDict[rowGrade]
     }
     
     table.appendChild(tbody)
